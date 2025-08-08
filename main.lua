@@ -9,38 +9,50 @@ screenGui.Name = "TeleportGui"
 screenGui.ResetOnSpawn = false
 screenGui.Parent = player:WaitForChild("PlayerGui")
 
--- Helper to create buttons
+-- Helper to create buttons (mobile-friendly sizing)
 local function createButton(name, text, position)
 	local button = Instance.new("TextButton")
 	button.Name = name
 	button.Text = text
-	button.Size = UDim2.new(0, 150, 0, 50)
+	-- Use scale-based sizing for mobile compatibility
+	button.Size = UDim2.new(0.25, 0, 0, 40) -- 25% screen width, 40 pixels height
 	button.Position = position
 	button.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
 	button.TextColor3 = Color3.new(1, 1, 1)
 	button.Font = Enum.Font.SourceSansBold
-	button.TextSize = 24
+	button.TextSize = 18 -- Smaller text for mobile
+	button.TextScaled = true -- Auto-scale text to fit button
+	-- Add rounded corners and better mobile touch response
+	button.BorderSizePixel = 0
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 8)
+	corner.Parent = button
 	button.Parent = screenGui
 	return button
 end
 
--- Create TP Up button
-local tpUpBtn = createButton("TPUpButton", "TP Up 400", UDim2.new(0, 20, 0, 100))
+-- Create TP Up button (positioned better for mobile)
+local tpUpBtn = createButton("TPUpButton", "TP Up", UDim2.new(0, 10, 0, 50))
 
 -- Create TP Down button
-local tpDownBtn = createButton("TPDownButton", "TP Down 200", UDim2.new(0, 20, 0, 160))
+local tpDownBtn = createButton("TPDownButton", "TP Down", UDim2.new(0, 10, 0, 100))
 
--- Create countdown label (initially invisible)
+-- Create countdown label (mobile-friendly sizing)
 local countdownLabel = Instance.new("TextLabel")
 countdownLabel.Name = "CountdownLabel"
-countdownLabel.Size = UDim2.new(0, 200, 0, 50)
-countdownLabel.Position = UDim2.new(0.5, -100, 0.5, -25)
+countdownLabel.Size = UDim2.new(0.5, 0, 0, 60) -- 50% screen width for mobile
+countdownLabel.Position = UDim2.new(0.25, 0, 0.4, 0) -- Centered horizontally, 40% from top
 countdownLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-countdownLabel.BackgroundTransparency = 0.5
+countdownLabel.BackgroundTransparency = 0.3
 countdownLabel.TextColor3 = Color3.new(1, 1, 1)
 countdownLabel.Font = Enum.Font.SourceSansBold
-countdownLabel.TextSize = 28
+countdownLabel.TextSize = 24
+countdownLabel.TextScaled = true -- Auto-scale text for mobile
 countdownLabel.Visible = false
+-- Add rounded corners to countdown label too
+local labelCorner = Instance.new("UICorner")
+labelCorner.CornerRadius = UDim.new(0, 12)
+labelCorner.Parent = countdownLabel
 countdownLabel.Parent = screenGui
 
 -- Function to teleport player
@@ -67,7 +79,7 @@ end
 
 -- Connect buttons to teleport actions
 tpUpBtn.MouseButton1Click:Connect(function()
-	teleportPlayer(180)
+	teleportPlayer(200)
 	-- Start countdown after teleporting up
 	spawn(function()
 		startCountdown(3)
